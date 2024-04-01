@@ -32,11 +32,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # SMTP conversation steps should continue here
 
-    # To close the socket:
-    clientSocket.close()
-
-    recv = clientSocket.recv(1024).decode()
-    #print(recv) #You can use these print statement to validate return codes from the server.
+    #You can use these print statement to validate return codes from the server.
     #ifrecv[:3] != 220:
        #print('220 reply not received from server.')
 
@@ -90,7 +86,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     message_body = "Hello Alice, How are you? Are you enjoying your Computer Networking class?\n"
     full_message = message_headers + message_body + "\r\n" + message_body + "\r\n.\r\n"
 
-    clientSocket.send(fullessage.encode())
+    clientSocket.send(full_message.encode())
     recv = clientSocket.recv(1024).decode()
     print(recv)
     if recv[:3] != 250:
@@ -117,7 +113,9 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     print(recv)
     if recv[:3] != 221:
         print('221 reply not received from server. Session not ended properly.')
+    # To close the socket
+    clientSocket.close()
 
 
 if __name__ == '__main__':
-    smtp_client (port= 1025, mailserver= '127.0.0.1')
+    smtp_client(port=1025, mailserver='127.0.0.1')
