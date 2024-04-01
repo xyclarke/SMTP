@@ -1,4 +1,4 @@
-from socket import *
+import socket
 
 
 def smtp_client(port=1025, mailserver='127.0.0.1'):
@@ -6,115 +6,77 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     endmsg = "\r\n.\r\n"
 
     # Choose a mail server (e.g. Google mail server) if you want to verify the script beyond GradeScope
-
     # Create socket called clientSocket and establish a TCP connection with mailserver and port
-
-    # Fill in start # To create a socket object called ClientSocket
-    import socket
+    
+    # Fill in start
+    # To create clientSoket and establish a TCP connection
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # To connect to the SMTP server
     clientSocket.connect((mailserver, port))
-
     recv = clientSocket.recv(1024).decode()
-    # print(recv) #You can use these print statement to validate return codes from the server.
+    print(recv) 
+    # Fill in end
+
+    # print(recv) # You can use these print statement to validate return codes from the server.
     # if recv[:3] != '220':
-    # print('220 reply not received from server.')
+    #  print('220 reply not received from server.')
 
- # To send Helo command and print server response.
-    heloCommand = 'HELO Alice\r\n'
-    clientSocket.send(heloCommand.encode())
+    # To send HELO command and print server response
+    heloCommand = b'HELO example.com\r\n'
+    clientSocket.send(heloCommand)
     recv1 = clientSocket.recv(1024).decode()
-    #print(recv1)
-
-    # To check if the first three characters of the response are '250'( SMTP protocol success code)
+    print(recv1) 
     # if recv1[:3] != '250':
     #    print('250 reply not received from server.')
 
-    # SMTP conversation steps should continue here
-
-    #You can use these print statement to validate return codes from the server.
-    #ifrecv[:3] != 220:
-       #print('220 reply not received from server.')
-
-    # Send HELO command and print server response.
-    helo_command = 'HELO Alice\r\n'
-    clientSocket.send(heloCommand.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv1)
-    # if recv1[:3] != '250':
-    #    print('250 reply not received from server.')
-
-    # Send MAIL FROM command and handle server response.
+    # To send MAIL FROM command and handle server response
     # Fill in start
-    mail_from_command = "From: <xc2217@nyu.edu>\r\n"
-    clientSocket.send(mail_from_command.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] != 250:
-        print('250 reply not received from server.')
+    sender = 'xc2217@nyu.edu'
+    clientSocket.sendall(f'MAIL FROM:<{sender}>\r\n'.encode())
+    recv_data = clientSocket.recv(1024).decode()
+    print(recv_data)
     # Fill in end
 
-    # Send RCPT TO command and handle server response.
+    # To send RCPT TO command and handle server response
     # Fill in start
-    rcpt_to_command = "RCPT TO:<swashbuckler080808@gmail.com>\r\n"
-    clientSocket.send(rcpt_to_command.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] != 250:
-        print('250 reply not received from server.')
+    recipient = 'niewenlai@gmail.com'
+    clientSocket.sendall(f'RCPT TO:<{recipient}>\r\n'.encode())
+    recv_data = clientSocket.recv(1024).decode()
+    print(recv_data)
     # Fill in end
 
-# To send DATA command and handle server response.
+    # To send DATA command and handle server response.
     # Fill in start
-    data_command = "DATA\r\n"
-    clientSocket.send(data_command.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] ==354:
-        print('354 reply not received from server.')
-    clientSocket.send("\r\n.\r\n".encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-
-    #To check for successful delivery with 250 response
-    print("No 354 reply response from server")
-
- # To send message data. # Fill in start
-    message_headers = "From: <<xc2217@nyu.edu>>\r\n"
-    "To:<swashbuckler080808@gmail.com>\r\n"
-    "Subject: Greetings from New York\r\n"
-    message_body = "Hello Alice, How are you? Are you enjoying your Computer Networking class?\n"
-    full_message = message_headers + message_body + "\r\n" + message_body + "\r\n.\r\n"
-
-    clientSocket.send(full_message.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] != 250:
-        print('250 reply not received from server. Message not sent successfully.')
+    clientSocket.sendall(b'DATA\r\n')
+    recv_data = clientSocket.recv(1024).decode()
+    print(recv_data)
     # Fill in end
 
-    # Message ends with a single period, send message end and handle server response.
+    # To Send message data
     # Fill in start
-    # To signal the end of the message with a period, to send message and handle server response
-    message_end = "\r\n.\r\n"
-    clientSocket.send(message_end.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] != 250:
-        print('250 reply not received from server.. Message not sent successfully.')
+    subject = 'Test Email'
+    message = 'This is a test email sent from Python.'
+    clientSocket.sendall(f'Subject: {subject}\r\n'.encode())
+    clientSocket.sendall(f'From: {sender}\r\n'.encode())
+    clientSocket.sendall(f'To: {recipient}\r\n'.encode())
+    clientSocket.sendall('\r\n'.encode())
+    clientSocket.sendall(message.encode())
+    clientSocket.sendall(b'\r\n.\r\n')
+    print(msg)
+    print(endmsg)
     # Fill in end
 
-    # Send QUIT command and handle server response.
+    # To message ends with a single period, send message end and handle server response
     # Fill in start
-    # To send the "QUIT" command, to signal the end of the SMTP session, and to hande the server response properly
-    quit_command = "QUIT\r\n"
-    clientSocket.send(quit_command.encode())
-    recv = clientSocket.recv(1024).decode()
-    print(recv)
-    if recv[:3] != 221:
-        print('221 reply not received from server. Session not ended properly.')
-    # To close the socket
-    clientSocket.close()
+    recv_data = clientSocket.recv(1024).decode()
+    print(recv_data)
+    # Fill in end
+
+    # To send a QUIT command and handle server response.
+    # Fill in start
+    clientSocket.sendall(b'QUIT\r\n')
+    recv_data = clientSocket.recv(1024).decode()
+    print(recv_data)
+    # Fill in end
 
 
 if __name__ == '__main__':
