@@ -21,7 +21,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     #  print('220 reply not received from server.')
 
     # To send HELO command and print server response
-    heloCommand = b'HELO example.com\r\n'
+    heloCommand = b'EHLO example.com\r\n'
     clientSocket.send(heloCommand)
     recv1 = clientSocket.recv(1024).decode()
     print(recv1) 
