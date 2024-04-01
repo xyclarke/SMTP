@@ -78,6 +78,14 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     print(recv_data)
     # Fill in end
 
+    # To check if the response code is 221
+    if recv_data.startswith('221'):
+        print("Server responded with 221 as expected")
+    else:
+        print("Did not receive the expected 221 response")
+    # To close the socket when it is done
+    clientSocket.close()
+
 
 if __name__ == '__main__':
     smtp_client(port=1025, mailserver='127.0.0.1')
