@@ -13,7 +13,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     clientSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientSocket.connect((mailserver, port))
     recv = clientSocket.recv(1024).decode()
-    print(recv) 
+
     # Fill in end
 
     # print(recv) # You can use these print statement to validate return codes from the server.
@@ -21,10 +21,10 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     #  print('220 reply not received from server.')
 
     # To send HELO command and print server response
-    heloCommand = b'EHLO example.com\r\n'
+    heloCommand = b'HELO example.com\r\n'
     clientSocket.send(heloCommand)
     recv1 = clientSocket.recv(1024).decode()
-    print(recv1) 
+
     # if recv1[:3] != '250':
     #    print('250 reply not received from server.')
 
@@ -33,7 +33,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     sender = 'xc2217@nyu.edu'
     clientSocket.sendall(f'MAIL FROM:<{sender}>\r\n'.encode())
     recv_data = clientSocket.recv(1024).decode()
-    print(recv_data)
+
     # Fill in end
 
     # To send RCPT TO command and handle server response
@@ -41,14 +41,14 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     recipient = 'niewenlai@gmail.com'
     clientSocket.sendall(f'RCPT TO:<{recipient}>\r\n'.encode())
     recv_data = clientSocket.recv(1024).decode()
-    print(recv_data)
+
     # Fill in end
 
     # To send DATA command and handle server response.
     # Fill in start
     clientSocket.sendall(b'DATA\r\n')
     recv_data = clientSocket.recv(1024).decode()
-    print(recv_data)
+
     # Fill in end
 
     # To Send message data
@@ -61,28 +61,27 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     clientSocket.sendall('\r\n'.encode())
     clientSocket.sendall(message.encode())
     clientSocket.sendall(b'\r\n.\r\n')
-    print(msg)
-    print(endmsg)
+
     # Fill in end
 
     # To message ends with a single period, send message end and handle server response
     # Fill in start
     recv_data = clientSocket.recv(1024).decode()
-    print(recv_data)
+
     # Fill in end
 
     # To send a QUIT command and handle server response.
     # Fill in start
     clientSocket.sendall(b'QUIT\r\n')
     recv_data = clientSocket.recv(1024).decode()
-    print(recv_data)
+
     # Fill in end
 
     # To check if the response code is 221
     if recv_data.startswith('221'):
-        print("Server responded with 221 as expected")
+
     else:
-        print("Did not receive the expected 221 response")
+
     # To close the socket when it is done
     clientSocket.close()
 
